@@ -21,3 +21,10 @@ Optional `config.json`
 Set `dryRun` to true to get upload status without actually persisting the line items. Default is `false`
 
 The writer produces a table (overwritten on each run) `/data/out/tables/line_items_status.csv` with a report on failures and successes.
+
+# Development
+
+create `.env` file based on `.env_template` in the root of this repo.
+
+https://developers.google.com/api-client-library/python/apis/doubleclickbidmanager/v1
+https://github.com/googleads/googleads-bidmanager-examples/blob/master/python/util.py

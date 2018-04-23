@@ -6,3 +6,6 @@ clean:
 
 dev:
 	docker-compose run --rm dev
+
+testk:
+	docker-compose run --rm dev python3 -m pytest -k $(what)

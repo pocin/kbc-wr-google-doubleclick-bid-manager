@@ -4,6 +4,8 @@ services:
   dev:
     build: .
     image: "pocin/kbc-wr-google-doubleclick-bid-manager:dev"
+    env_file:
+      - .env
     volumes:
         - ./:/code
         - ./data/out/files/:/data/out/files/
