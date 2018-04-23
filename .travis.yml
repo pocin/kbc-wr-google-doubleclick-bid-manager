@@ -6,7 +6,7 @@ services:
 before_script:
   - docker build . --tag=$APP_IMAGE
 script:
-  - docker run --rm --entrypoint 'python3' $APP_IMAGE -m pytest
+  - docker run --rm -e WR_CLIENT_ID -e WR_CLIENT_SECRET -e WR_REFRESH_TOKEN --entrypoint 'python3' $APP_IMAGE -m pytest
 after_success:
   - docker images
 
