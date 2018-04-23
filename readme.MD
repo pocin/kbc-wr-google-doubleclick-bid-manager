@@ -18,7 +18,7 @@ Optional `config.json`
 
 ```
 
-Set `dryRun` to true to get upload status without actually persisting the line items. Default is `false`
+Set `dryRun` to `false` to get upload status without actually persisting the line items. Default is `true`
 
 The writer produces a table (overwritten on each run) `/data/out/tables/line_items_status.csv` with a report on failures and successes.
 
