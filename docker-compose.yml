@@ -1,0 +1,11 @@
+version: '2'
+services:
+  # for development purposes
+  dev:
+    build: .
+    image: "pocin/kbc-wr-google-doubleclick-bid-manager:dev"
+    volumes:
+        - ./:/code
+        - ./data/out/files/:/data/out/files/
+    command:
+      - /bin/sh
