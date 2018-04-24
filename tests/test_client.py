@@ -4,12 +4,13 @@ from wrdbm.client import DBMWriter
 import csv
 
 CREDENTIALS = {
-    'client_secret': os.environ['WR_CLIENT_SECRET'],
-    'client_id': os.environ['WR_CLIENT_ID'],
-    'refresh_token': os.environ['WR_REFRESH_TOKEN']
+    'client_secret': os.getenv('WR_CLIENT_SECRET'),
+    'client_id': os.getenv('WR_CLIENT_ID'),
+    'refresh_token': os.getenv('WR_REFRESH_TOKEN')
 }
 
 
+@pytest.mark.skip
 def test_creating_authenticated_client_from_refresh_token():
     dbmc = DBMWriter(**CREDENTIALS)
     resp = dbmc.lineitems_response_to_csv({
@@ -17,8 +18,8 @@ def test_creating_authenticated_client_from_refresh_token():
         'lineItems': "Something,bad\nhappened,here"
     })
     # How does it behave?
-    import pdb
-    pdb.set_trace()
+    # import pdb
+    # pdb.set_trace()
     assert False
 
 
