@@ -10,17 +10,9 @@ CREDENTIALS = {
 }
 
 
-@pytest.mark.skip
 def test_creating_authenticated_client_from_refresh_token():
     dbmc = DBMWriter(**CREDENTIALS)
-    resp = dbmc.lineitems_response_to_csv({
-        'dryRun': True,
-        'lineItems': "Something,bad\nhappened,here"
-    })
-    # How does it behave?
-    # import pdb
-    # pdb.set_trace()
-    assert False
+    assert isinstance(dbmc.access_token, str)
 
 
 def test_writing_ok_response_to_csv(tmpdir):
