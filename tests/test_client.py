@@ -1,6 +1,6 @@
 import os
 import pytest
-from wrdbm.client import DBMWriter
+from wrdbm.writer import DBMWriter
 import csv
 
 CREDENTIALS = {
