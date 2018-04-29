@@ -67,9 +67,9 @@ def validate_extractor_params(params):
     schema = vp.Schema(
         {
             "extract": {
-                "lineitems": {
+                "lineItems": {
                     "filterType": vp.Any("ADVERTISER_ID", "INSERTION_ORDER_ID", "LINE_ITEM_ID"),
-                    "filterIds": [vp.Coerce(int)]
+                    vp.Optional("filterIds"): [vp.Coerce(int)]
                 }
             }
         }
@@ -81,8 +81,9 @@ def main(datadir, credentials, params):
     params_cleaned = validate_extractor_params(params)
     ex = DBMExtractor(**credentials)
     outpath = Path(datadir) / 'out/tables/lineitems_export.csv'
+    config_lineitems = params_cleaned['lineItems']
     ex.download_and_clean_lineitems(outpath,
-                                    params_cleaned['filterType'],
-                                    params['filterIds'])
+                                    config_lineitems['filterType'],
+                                    config_lineitems.get('filterIds'))
 
 
