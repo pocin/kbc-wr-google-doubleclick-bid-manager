@@ -2,17 +2,13 @@
 """
 from wrdbm.client import DBMClient
 import random
-from wrdbm.utils import strip_json_tags
+from pathlib import Path
 import ijson
+import voluptuous as vp
+
 
 class DBMExtractor(DBMClient):
     def _download_lineitems(self, outpath, filter_type, filter_ids=None):
-        ok_filter_types = {"ADVERTISER_ID", "INSERTION_ORDER_ID", "LINE_ITEM_ID"}
-        if filter_type not in ok_filter_types:
-            err = ("when downloading lineitems, 'filterType' must be one of '{}', "
-                   "not '{}'".format(ok_filter_types, filter_type))
-            raise ValueError(err)
-
         payload = {
             "filterType": filter_type,
         }
@@ -38,7 +34,8 @@ class DBMExtractor(DBMClient):
         '{"lineItems": "actual,csv\ncontents,yes"}'
         so this function skips the first and last json string
 
-        DOESN'T WORK AT THE MOMENT as the csv is JSON escaped
+        DOESN'T WORK AT THE MOMENT as the csv is JSON escaped and we would need
+        to unescape \n and "
 
         """
         raise NotImplementedError("Dont use this")
@@ -64,3 +61,28 @@ class DBMExtractor(DBMClient):
         self._download_lineitems(tmp_outpath, filter_type, filter_ids)
         real_outpath = self._clean_lineitems_response_via_ijson(tmp_outpath, outpath)
         return real_outpath
+
+
+def validate_extractor_params(params):
+    schema = vp.Schema(
+        {
+            "extract": {
+                "lineitems": {
+                    "filterType": vp.Any("ADVERTISER_ID", "INSERTION_ORDER_ID", "LINE_ITEM_ID"),
+                    "filterIds": [vp.Coerce(int)]
+                }
+            }
+        }
+    )
+    return schema(params)
+
+
+def main(datadir, credentials, params):
+    params_cleaned = validate_extractor_params(params)
+    ex = DBMExtractor(**credentials)
+    outpath = Path(datadir) / 'out/tables/lineitems_export.csv'
+    ex.download_and_clean_lineitems(outpath,
+                                    params_cleaned['filterType'],
+                                    params['filterIds'])
+
+
