@@ -3,8 +3,7 @@ import os
 import sys
 import requests
 from keboola.docker import Config
-from wrdbm.writer import main
-
+import wrdbm.writer
 
 if __name__ == '__main__':
     try:
@@ -22,7 +21,7 @@ if __name__ == '__main__':
             'refresh_token': config.get_oauthapi_data()['refresh_token']
         }
         logging.info(credentials)
-        main(datadir, credentials, dry_run=params.get('dryRun', True))
+        wrdbm.writer.main(datadir, credentials, params)
     except ValueError:
         logging.error(err)
         sys.exit(1)
