@@ -1,14 +1,14 @@
 import csv
 import pytest
-from wrdbm.utils import strip_json_tags
+from wrdbm.extractor import DBMExtractor
 
-def test_cleaning_lineitems_json(tmpdir):
+def test_converting_lineitems_json_to_csv(tmpdir):
 
     infile = tmpdir.join("lineitems_input.json")
-    infile.write('{"lineItems": "columnA,columnB\nvalue,value2"}')
+    infile.write(r'{"lineItems": "columnA,columnB\n\"value\",value2"}')
     outfile = tmpdir.join("outfile.csv")
 
-    strip_json_tags(infile.strpath, outfile.strpath)
+    DBMExtractor._clean_lineitems_response_via_ijson(infile.strpath, outfile.strpath)
 
     with open(outfile.strpath) as inf:
         reader = csv.DictReader(inf)

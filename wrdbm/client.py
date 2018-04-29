@@ -38,10 +38,10 @@ class DBMClient:
                 self._access_token = resp.json()['access_token']
         return self._access_token
 
-    def _auth_request(self, method, endpoint, **requests_kwargs):
+    def _auth_request(self, method, endpoint, stream=False, **requests_kwargs):
         url = urljoin(self.root_url, endpoint.lstrip('/'))
         headers = {'Authorization': "Bearer {}".format(self.access_token)}
-        resp = requests.request(method, url, headers=headers, **requests_kwargs)
+        resp = requests.request(method, url, headers=headers, stream=stream, **requests_kwargs)
         try:
             resp.raise_for_status()
         except requests.HTTPError as e:
@@ -55,4 +55,4 @@ class DBMClient:
 
     def post_stream(self, endpoint, json):
         with self._auth_request("POST", endpoint, json=json, stream=True) as resp:
-            yield from resp.iter_contents()
+            yield from resp.iter_content(1024)
