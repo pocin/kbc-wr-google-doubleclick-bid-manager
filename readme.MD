@@ -1,6 +1,8 @@
 # Keboola writer for Google Doubleclick Bid Manager
+---
+[![Build Status](https://travis-ci.org/pocin/kbc-wr-google-doubleclick-bid-manager.svg?branch=master)](https://travis-ci.org/pocin/kbc-wr-google-doubleclick-bid-manager)
+---
 
-This component is still under heavy development
 
 Uses this endpoint https://developers.google.com/bid-manager/v1/lineitems/uploadlineitems for uploading line items in CSV format.
 
