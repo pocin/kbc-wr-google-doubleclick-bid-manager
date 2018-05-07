@@ -13,8 +13,7 @@ def validate_params(params):
         {
             "write": {
                 "lineItems": {
-                    "dryRun": vp.Coerce(bool),
-                    "filename": str
+                    "dryRun": vp.Coerce(bool)
                 }
             }
         }
@@ -25,7 +24,7 @@ def main(datadir, credentials, params):
     params_cleaned = validate_params(params)
     config_lineitems = params_cleaned['lineItems']
     writer = DBMWriter(**credentials)
-    path_lineitems_in = Path(datadir) / 'in/tables/' / config_lineitems['filename']
+    path_lineitems_in = Path(datadir) / 'in/tables/' / 'line_items.csv'
     path_lineitems_out = Path(datadir) / 'out/tables/' / 'line_items_status.csv'
     writer.process_lineitems(path_lineitems_in, path_lineitems_out, dry_run=config_lineitems['dryRun'])
 
