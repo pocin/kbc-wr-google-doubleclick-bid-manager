@@ -21,7 +21,7 @@ if __name__ == '__main__':
             'refresh_token': config.get_oauthapi_data()['refresh_token']
         }
         wrdbm.writer.main(datadir, credentials, params)
-    except ValueError:
+    except ValueError as err:
         logging.error(err)
         sys.exit(1)
     except requests.HTTPError as err:

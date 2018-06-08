@@ -40,7 +40,7 @@ class DBMWriter(DBMClient):
             resp_json,
             outpath='/data/out/files/line_items_status.json'):
         logging.info("Serializing job status to csv")
-        errors = resp_json['uploadStatus']['errors']
+        errors = resp_json['uploadStatus'].get('errors')
         if errors:
             raise ValueError("couldn't upload lineitems: %s", errors)
         try:
@@ -65,9 +65,13 @@ class DBMWriter(DBMClient):
         logging.info("Processing %s with dry_run=%s", path_in, dry_run)
         with open(path_in, 'r') as fin:
             # read into memory this time, if needed implement chunking
-            csv_items = fin.read()
+            csv_items = fin.readlines()
+            csv_items[0] = csv_items[0]
         resp = self.upload_lineitems(items=csv_items, dry_run=dry_run)
 
         logging.info("Serializing status to %s", path_out)
         true_outpath = DBMWriter.lineitems_response_to_csv(resp, path_out)
         return true_outpath
+
+def clean_header(header):
+    return header.
