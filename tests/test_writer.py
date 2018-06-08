@@ -1,6 +1,7 @@
 import os
 import pytest
 from wrdbm.writer import DBMWriter, validate_params
+import wrdbm.writer
 import csv
 
 CREDENTIALS = {
@@ -8,6 +9,18 @@ CREDENTIALS = {
     'client_id': os.getenv('WR_CLIENT_ID'),
     'refresh_token': os.getenv('WR_REFRESH_TOKEN')
 }
+
+def test_cleaning_lineitems_csv(tmpdir):
+    infile = tmpdir.join("foo.csv")
+    infile.write("""Line_Item_No,Advertiser_Name
+1234,foo_something
+4321,8765""")
+    prepared = wrdbm.writer.prepare_csv(infile.strpath)
+    expected = """Line Item No,Advertiser Name
+1234,foo_something
+4321,8765"""
+    assert prepared == expected
+
 
 def test_validating_params():
     ok = {

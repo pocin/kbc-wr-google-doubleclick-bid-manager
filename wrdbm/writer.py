@@ -63,15 +63,24 @@ class DBMWriter(DBMClient):
 
         """
         logging.info("Processing %s with dry_run=%s", path_in, dry_run)
-        with open(path_in, 'r') as fin:
-            # read into memory this time, if needed implement chunking
-            csv_items = fin.readlines()
-            csv_items[0] = csv_items[0]
+        # read into memory this time, if needed implement chunking
+        csv_items = prepare_csv(path_in)
         resp = self.upload_lineitems(items=csv_items, dry_run=dry_run)
 
         logging.info("Serializing status to %s", path_out)
         true_outpath = DBMWriter.lineitems_response_to_csv(resp, path_out)
         return true_outpath
 
+def prepare_csv(path_in):
+    """Convert This_is_Column_name into "This is Column name"
+
+    a format which dbm expects
+    """
+    logging.debug("Cleaning header (from underscores to spaces)")
+    with open(path_in, 'r') as fin:
+        cleaned_header = clean_header(next(fin))
+        rest = fin.read()
+        return cleaned_header + rest
+
 def clean_header(header):
-    return header.
+    return header.replace('_', ' ')
