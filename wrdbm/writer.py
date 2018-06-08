@@ -11,6 +11,7 @@ import voluptuous as vp
 def validate_params(params):
     schema = vp.Schema(
         {
+            vp.Optional("debug"): bool,
             "write": {
                 "lineItems": {
                     "dryRun": vp.Coerce(bool)
@@ -22,7 +23,7 @@ def validate_params(params):
 
 def main(datadir, credentials, params):
     params_cleaned = validate_params(params)
-    config_lineitems = params_cleaned['lineItems']
+    config_lineitems = params_cleaned['write']['lineItems']
     writer = DBMWriter(**credentials)
     path_lineitems_in = Path(datadir) / 'in/tables/' / 'line_items.csv'
     path_lineitems_out = Path(datadir) / 'out/tables/' / 'line_items_status.csv'

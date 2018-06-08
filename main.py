@@ -20,7 +20,6 @@ if __name__ == '__main__':
             'client_secret': config.get_oauthapi_appsecret(),
             'refresh_token': config.get_oauthapi_data()['refresh_token']
         }
-        logging.info(credentials)
         wrdbm.writer.main(datadir, credentials, params)
     except ValueError:
         logging.error(err)

@@ -1,6 +1,6 @@
 import os
 import pytest
-from wrdbm.writer import DBMWriter
+from wrdbm.writer import DBMWriter, validate_params
 import csv
 
 CREDENTIALS = {
@@ -9,6 +9,25 @@ CREDENTIALS = {
     'refresh_token': os.getenv('WR_REFRESH_TOKEN')
 }
 
+def test_validating_params():
+    ok = {
+        "debug": True,
+        "write": {
+            "lineItems": {
+                "dryRun": True
+            }
+        }
+    }
+    assert validate_params(ok) == ok
+
+    too_ok = {
+        "write": {
+            "lineItems": {
+                "dryRun": True
+            }
+        }
+    }
+    assert validate_params(too_ok) == too_ok
 
 def test_creating_authenticated_client_from_refresh_token():
     dbmc = DBMWriter(**CREDENTIALS)
