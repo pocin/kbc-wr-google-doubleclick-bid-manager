@@ -64,7 +64,8 @@ class DBMWriter(DBMClient):
         """
         logging.info("Processing %s with dry_run=%s", path_in, dry_run)
         with open(path_in, 'r') as fin:
-            csv_items = csv.reader(fin).read()
+            # read into memory this time, if needed implement chunking
+            csv_items = fin.read()
         resp = self.upload_lineitems(items=csv_items, dry_run=dry_run)
 
         logging.info("Serializing status to %s", path_out)
